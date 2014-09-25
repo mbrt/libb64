@@ -20,7 +20,7 @@ namespace base64
     class encoder
     {
     public:
-        encoder(int buffersize_in = BUFFERSIZE)
+        encoder(std::size_t buffersize_in)
             : _buffersize(buffersize_in), _code(0), _plaintext(0)
         { }
 
@@ -35,22 +35,22 @@ namespace base64
 
         int encode(char value_in)
         {
-            return ::base64_encode_value(value_in);
+            return base64_encode_value(value_in);
         }
 
         int encode(const char* code_in, const int length_in, char* plaintext_out)
         {
-            return ::base64_encode_block(code_in, length_in, plaintext_out, &_state);
+            return base64_encode_block(code_in, length_in, plaintext_out, &_state);
         }
 
         int encode_end(char* plaintext_out)
         {
-            return ::base64_encode_blockend(plaintext_out, &_state);
+            return base64_encode_blockend(plaintext_out, &_state);
         }
 
         void encode(std::istream& istream_in, std::ostream& ostream_in)
         {
-            ::base64_init_encodestate(&_state);
+            base64_init_encodestate(&_state);
             //
             if (!_plaintext)
                 _plaintext = new char[_buffersize];
@@ -72,12 +72,12 @@ namespace base64
             codelength = encode_end(_code);
             ostream_in.write(_code, codelength);
             //
-            ::base64_init_encodestate(&_state);
+            base64_init_encodestate(&_state);
         }
 
         void encode(const char* in, std::size_t len, std::ostream& ostream_in)
         {
-            ::base64_init_encodestate(&_state);
+            base64_init_encodestate(&_state);
             //
             if (!_code)
                 _code = new char[2 * _buffersize];
@@ -98,14 +98,14 @@ namespace base64
             codelength = encode_end(_code);
             ostream_in.write(_code, codelength);
             //
-            ::base64_init_encodestate(&_state);
+            base64_init_encodestate(&_state);
         }
 
     private:
-        ::base64_encodestate _state;
-        const int _buffersize;
-        const char* _code;
-        const char* _plaintext;
+        base64_encodestate _state;
+        std::size_t _buffersize;
+        char* _code;
+        char* _plaintext;
     };
 
 } // namespace base64
