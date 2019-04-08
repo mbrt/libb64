@@ -8,6 +8,7 @@ For details, see http://sourceforge.net/projects/libb64
 #ifndef BASE64_ENCODE_H
 #define BASE64_ENCODE_H
 
+#include <algorithm>
 #include <iostream>
 
 namespace base64
